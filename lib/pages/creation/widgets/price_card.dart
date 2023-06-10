@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:xl/xl.dart';
 
+import '../../../models/marker.dart';
 import '../../../models/price.dart';
 import '../../../utils/constants/colors.dart';
 
 class PriceCardWidget extends StatefulWidget {
-  final PriceModel price;
-  final PriceModel? selectedPrice;
-  final Function(PriceModel) selectPrice;
-  final Function(PriceModel) onDeletePrice;
+  final MarkerModel price;
+  final MarkerModel? selectedPrice;
+  final Function(MarkerModel) selectPrice;
+  final Function(MarkerModel) onDeletePrice;
 
   const PriceCardWidget({
     Key? key,

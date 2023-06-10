@@ -69,7 +69,7 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                           child: Row(
                             children: [
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                // mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Text(
                                     'Цены:',
@@ -121,7 +121,7 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                                     ),
                                   ),
                                   const SizedBox(height: 24),
-                                  for (PriceModel price in controller.prices)
+                                  for (MarkerModel price in controller.prices)
                                     PriceCardWidget(
                                       price: price,
                                       selectedPrice: controller.selectedPrice,
@@ -141,23 +141,29 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                             scrollDirection: Axis.horizontal,
                             child: Column(
                               children: [
-                                for (var j = 0; j < 20; j++)
+                                for (List<MarkerModel?> x in controller.grid)
+                                  // for (var j = 0; j < 20; j++)
                                   Row(
                                     children: [
-                                      for (var i = 0; i < 20; i++)
+                                      for (MarkerModel? y in x)
+                                        // for (var i = 0; i < 20; i++)
                                         PlaceWidget(
                                           editing: edition && controller.selectedPrice != null,
                                           onHover: (marker) {
-                                            log((marker?.row).toString());
+                                            controller.setGridElement(controller.grid.indexOf(x), x.indexOf(y), marker);
+                                            // log((marker?.row).toString());
                                           },
-                                          marker: MarkerModel(
+                                          currentMarker: y,
+                                          marker: controller.selectedPrice,
+
+                                          /* MarkerModel(
                                             id: controller.selectedPrice?.id ?? '??',
                                             name: controller.selectedPrice?.name ?? '?',
                                             color: controller.selectedPrice?.color ?? Colors.red,
                                             type: controller.selectedPrice?.type,
-                                            row: i,
-                                            column: j,
-                                          ),
+                                            row: controller.grid.indexOf(x),
+                                            column: x.indexOf(y),
+                                          ) */
                                         ),
                                     ],
                                   ),
@@ -169,6 +175,11 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                       ),
                     ],
                   ),
+                  floatingActionButton: FloatingActionButton(
+                    onPressed: () {
+                      controller.generateGrid(20, 20);
+                    },
+                  ),
                 ),
               );
       },
@@ -176,111 +187,147 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
   }
 }
 
-class PlaceWidget extends StatefulWidget {
-  final bool editing;
-  final MarkerModel? marker;
+class PlaceWidget extends StatelessWidget {
   final Function(MarkerModel?) onHover;
+  final MarkerModel? marker;
+  final MarkerModel? currentMarker;
+  final bool editing;
+  // final int x;
+  // final int y;
   const PlaceWidget({
-    Key? key,
     required this.editing,
     required this.onHover,
+    // required this.x,
+    // required this.y,
     this.marker,
+    this.currentMarker,
+    Key? key,
   }) : super(key: key);
-
-  @override
-  State<PlaceWidget> createState() => _PlaceWidgetState();
-}
-
-class _PlaceWidgetState extends State<PlaceWidget> {
-  MarkerModel? currentMarker;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: MouseRegion(
         onEnter: (event) {
-          if (widget.editing) {
-            setState(() {
-              currentMarker = widget.marker;
-            });
-          } else {
-            widget.onHover(currentMarker);
-          }
+          if (editing) {
+            onHover(marker);
+            // setState(() {
+            //   currentMarker = widget.marker;
+            // });
+          } else {}
         },
         onHover: (event) {},
         cursor: SystemMouseCursors.grab,
-        child: widget.editing
-            ? SizedBox(
-                height: 25,
-                width: 25,
-                // margin: EdgeInsets.all(0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (currentMarker == null)
-                      Container(
-                        alignment: Alignment.center,
-                        height: 25,
-                        width: 25,
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      )
-                    else
-                      Container(
-                        alignment: Alignment.center,
-                        height: 15,
-                        width: 15,
-                        decoration: BoxDecoration(
-                          color: currentMarker?.color ?? Colors.grey,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                  ],
-                ),
-              )
-            : SizedBox(
-                height: 25,
-                width: 25,
-                // margin: EdgeInsets.all(0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (currentMarker == null)
-                      Container(
-                        alignment: Alignment.center,
-                        height: 7,
-                        width: 7,
-                        decoration: BoxDecoration(
-                          color: currentMarker?.color ?? Colors.grey,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      )
-                    else
-                      currentMarker?.type == PointType.sit
-                          ? Container(
-                              alignment: Alignment.center,
-                              height: 15,
-                              width: 15,
-                              decoration: BoxDecoration(
-                                color: currentMarker?.color ?? Colors.grey,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                            )
-                          : Container(
-                              alignment: Alignment.center,
-                              height: 25,
-                              width: 25,
-                              decoration: BoxDecoration(
-                                color: currentMarker?.color ?? Colors.grey,
-                                // borderRadius: BorderRadius.circular(100),
-                              ),
-                            ),
-                  ],
-                ),
-              ),
+        child: Stack(
+          children: [
+            Icon(
+              Icons.circle,
+              color: currentMarker?.color ?? Colors.grey,
+            ),
+            // Text(
+            //   (currentMarker?.name).toString(),
+            //   style: TextStyle(
+            //     fontSize: 9,
+            //   ),
+            //   textAlign: TextAlign.center,
+            // )
+          ],
+        ),
       ),
     );
   }
 }
+
+// class _PlaceWidgetState extends State<PlaceWidget> {
+//   MarkerModel? currentMarker;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       child: MouseRegion(
+//         onEnter: (event) {
+//           if (widget.editing) {
+//             setState(() {
+//               currentMarker = widget.marker;
+//             });
+//           } else {
+//             widget.onHover(currentMarker);
+//           }
+//         },
+//         onHover: (event) {},
+//         cursor: SystemMouseCursors.grab,
+//         child: widget.editing
+//             ? SizedBox(
+//                 height: 25,
+//                 width: 25,
+//                 // margin: EdgeInsets.all(0),
+//                 child: Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     if (currentMarker == null)
+//                       Container(
+//                         alignment: Alignment.center,
+//                         height: 25,
+//                         width: 25,
+//                         decoration: BoxDecoration(
+//                           border: Border.all(),
+//                           borderRadius: BorderRadius.circular(4),
+//                         ),
+//                       )
+//                     else
+//                       Container(
+//                         alignment: Alignment.center,
+//                         height: 15,
+//                         width: 15,
+//                         decoration: BoxDecoration(
+//                           color: currentMarker?.color ?? Colors.grey,
+//                           borderRadius: BorderRadius.circular(100),
+//                         ),
+//                       ),
+//                   ],
+//                 ),
+//               )
+//             : SizedBox(
+//                 height: 25,
+//                 width: 25,
+//                 // margin: EdgeInsets.all(0),
+//                 child: Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     if (currentMarker == null)
+//                       Container(
+//                         alignment: Alignment.center,
+//                         height: 7,
+//                         width: 7,
+//                         decoration: BoxDecoration(
+//                           color: currentMarker?.color ?? Colors.grey,
+//                           borderRadius: BorderRadius.circular(100),
+//                         ),
+//                       )
+//                     else
+//                       currentMarker?.type == PointType.sit
+//                           ? Container(
+//                               alignment: Alignment.center,
+//                               height: 15,
+//                               width: 15,
+//                               decoration: BoxDecoration(
+//                                 color: currentMarker?.color ?? Colors.grey,
+//                                 borderRadius: BorderRadius.circular(100),
+//                               ),
+//                             )
+//                           : Container(
+//                               alignment: Alignment.center,
+//                               height: 25,
+//                               width: 25,
+//                               decoration: BoxDecoration(
+//                                 color: currentMarker?.color ?? Colors.grey,
+//                                 // borderRadius: BorderRadius.circular(100),
+//                               ),
+//                             ),
+//                   ],
+//                 ),
+//               ),
+//       ),
+//     );
+//   }
+// }

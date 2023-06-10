@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
 
+import '../../../models/marker.dart';
 import '../../../models/price.dart';
 import '../controller.dart';
 
@@ -148,7 +149,7 @@ class _CreationDialogWidgetState extends State<CreationDialogWidget> {
                   onColorChanged: (color) {
                     var rng = Random();
                     controller.createPrice(
-                      PriceModel(
+                      MarkerModel(
                         id: (rng.nextInt(100)).toString(),
                         name: controller.nameController.text,
                         price: controller.priceController.text,
