@@ -1,15 +1,13 @@
 import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tickets/widgets/custom_app_bar.dart';
 
 import '../../mixins/utils.dart';
 import '../../models/marker.dart';
-import '../../models/price.dart';
 import '../../utils/constants/colors.dart';
+import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_scaffold.dart';
 import '../../widgets/lite_loading_screen.dart';
 import 'controller.dart';
@@ -17,8 +15,19 @@ import 'widgets/creation_dialog.dart';
 import 'widgets/price_card.dart';
 
 class CreationScreen extends StatefulWidget {
+  final String name;
+  final String date;
+  final String place;
+  final int rows;
+  final int columns;
+
   const CreationScreen({
     Key? key,
+    required this.name,
+    required this.date,
+    required this.place,
+    required this.rows,
+    required this.columns,
   }) : super(key: key);
 
   @override
@@ -31,11 +40,19 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
   int currSeconds = 0;
   bool edition = false;
 
+  CreationScreenController controller = Get.put(CreationScreenController());
+
   @override
   void initState() {
     edition = false;
     super.initState();
+    initGrid();
+
     animationController = AnimationController(vsync: this);
+  }
+
+  void initGrid() {
+    controller.generateGrid(widget.rows, widget.columns);
   }
 
   @override
@@ -61,89 +78,86 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                   });
                 },
                 child: CustomScaffold(
-                  appBar: CustomAppBar(titleString: 'Создание'),
+                  appBar: CustomAppBar(titleString: '${widget.name} - ${widget.date} (${widget.place})'),
                   backgroundColor: AppColors.WHITE,
                   body: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Flexible(
-                        flex: 1,
-                        child: Container(
-                          child: Row(
-                            children: [
-                              Column(
-                                // mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    'Цены:',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 24),
-                                  Card(
-                                    elevation: 5,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Row(
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: const [
-                                              Text(
-                                                '  Cоздать метку:',
-                                                style: TextStyle(
-                                                  fontSize: 24,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(width: 36),
-                                          InkWell(
-                                            onTap: () {
-                                              Get.defaultDialog(
-                                                title: '  Создание метки  ',
-                                                titleStyle: const TextStyle(fontSize: 36),
-                                                content: const CreationDialogWidget(),
-                                              );
-                                            },
-                                            child: const Card(
-                                              color: Colors.greenAccent,
-                                              child: SizedBox(
-                                                height: 48,
-                                                width: 48,
-                                                child: Icon(
-                                                  Icons.add,
-                                                  color: Colors.white,
-                                                ),
+                      Container(
+                        child: Row(
+                          children: [
+                            Column(
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(height: 24),
+                                Text(
+                                  'Цены:',
+                                  style: Get.textTheme.bodyText1,
+                                ),
+                                const SizedBox(height: 16),
+                                Card(
+                                  elevation: 5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              '  Cоздать метку:',
+                                              style: Get.textTheme.bodyText2,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(width: 36),
+                                        InkWell(
+                                          onTap: () {
+                                            Get.defaultDialog(
+                                              title: '  Создание метки  ',
+                                              titleStyle: Get.textTheme.bodyText1,
+                                              content: const CreationDialogWidget(),
+                                            );
+                                          },
+                                          child: const Card(
+                                            color: Colors.greenAccent,
+                                            child: SizedBox(
+                                              height: 48,
+                                              width: 48,
+                                              child: Icon(
+                                                Icons.add,
+                                                color: Colors.white,
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  const SizedBox(height: 24),
-                                  for (MarkerModel price in controller.prices)
-                                    PriceCardWidget(
-                                      price: price,
-                                      selectedPrice: controller.selectedPrice,
-                                      selectPrice: (price) => controller.selectPrice(price),
-                                      onDeletePrice: (price) => controller.removePrice(price),
-                                    ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                ),
+                                const SizedBox(height: 24),
+                                for (MarkerModel price in controller.prices)
+                                  PriceCardWidget(
+                                    price: price,
+                                    selectedPrice: controller.selectedPrice,
+                                    selectPrice: (price) => controller.selectPrice(price),
+                                    onDeletePrice: (price) => controller.removePrice(price),
+                                  ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      Flexible(
-                        flex: 1,
+                      SizedBox(width: 24),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
                         child: SingleChildScrollView(
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Column(
                               children: [
+                                const SizedBox(height: 16),
                                 // for (List<MarkerModel?> x in controller.grid)
                                 for (var incrX = 0; incrX < controller.grid.length; incrX++)
                                   Row(
@@ -183,11 +197,6 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                         ),
                       ),
                     ],
-                  ),
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: () {
-                      controller.generateGrid(20, 20);
-                    },
                   ),
                 ),
               );

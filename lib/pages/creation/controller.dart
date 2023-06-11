@@ -25,7 +25,6 @@ class CreationScreenController extends GetxController with Utils {
   @override
   void onReady() {
     super.onReady();
-    generateGrid(20, 20);
   }
 
   void generateGrid(int x, int y) {

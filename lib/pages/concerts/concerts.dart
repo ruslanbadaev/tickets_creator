@@ -1,21 +1,15 @@
-import 'dart:developer';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tickets/pages/creation/creation.dart';
-import 'package:tickets/widgets/custom_app_bar.dart';
 
 import '../../mixins/utils.dart';
-import '../../models/marker.dart';
-import '../../models/price.dart';
 import '../../utils/constants/colors.dart';
+import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_scaffold.dart';
 import '../../widgets/lite_loading_screen.dart';
+import '../creation/creation.dart';
 import 'controller.dart';
-
-import 'widgets/price_card.dart';
 
 class ConcertsScreen extends StatefulWidget {
   const ConcertsScreen({
@@ -27,16 +21,15 @@ class ConcertsScreen extends StatefulWidget {
 }
 
 class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderStateMixin {
-  CarouselController carouselController = CarouselController();
-  AnimationController? animationController;
-  int currSeconds = 0;
-  bool edition = false;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController placeController = TextEditingController();
+  TextEditingController xController = TextEditingController();
+  TextEditingController yController = TextEditingController();
 
   @override
   void initState() {
-    edition = false;
     super.initState();
-    animationController = AnimationController(vsync: this);
   }
 
   @override
@@ -68,6 +61,100 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                         Row(
                           children: [
                             Card(
+                              margin: EdgeInsets.symmetric(vertical: 6),
+                              color: AppColors.WHITE,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                alignment: Alignment.center,
+                                height: 64,
+                                child: Text(
+                                  'Подгорица 23.06.2023',
+                                  style: Get.textTheme.bodyText2,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: const Card(
+                                elevation: 5,
+                                child: SizedBox(
+                                  height: 64,
+                                  width: 64,
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.redAccent,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Card(
+                              margin: EdgeInsets.symmetric(vertical: 6),
+                              color: AppColors.WHITE,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                alignment: Alignment.center,
+                                height: 64,
+                                child: Text(
+                                  'Подгорица 23.06.2023',
+                                  style: Get.textTheme.bodyText2,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: const Card(
+                                elevation: 5,
+                                child: SizedBox(
+                                  height: 64,
+                                  width: 64,
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.redAccent,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Card(
+                              margin: EdgeInsets.symmetric(vertical: 6),
+                              color: AppColors.WHITE,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                alignment: Alignment.center,
+                                height: 64,
+                                child: Text(
+                                  'Подгорица 23.06.2023',
+                                  style: Get.textTheme.bodyText2,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: const Card(
+                                elevation: 5,
+                                child: SizedBox(
+                                  height: 64,
+                                  width: 64,
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.redAccent,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Card(
+                              margin: EdgeInsets.symmetric(vertical: 6),
                               color: AppColors.WHITE,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -127,6 +214,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                       width: 200,
                                       height: 36,
                                       child: TextField(
+                                        controller: nameController,
                                         textAlignVertical: TextAlignVertical.center,
                                         maxLines: 1,
                                         style: Get.textTheme.bodyText2,
@@ -152,6 +240,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                       width: 200,
                                       height: 36,
                                       child: TextField(
+                                        controller: dateController,
                                         textAlignVertical: TextAlignVertical.center,
                                         maxLines: 1,
                                         style: Get.textTheme.bodyText2,
@@ -177,6 +266,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                       width: 200,
                                       height: 36,
                                       child: TextField(
+                                        controller: placeController,
                                         textAlignVertical: TextAlignVertical.center,
                                         maxLines: 1,
                                         style: Get.textTheme.bodyText2,
@@ -206,6 +296,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                       width: 82,
                                       height: 36,
                                       child: TextField(
+                                        controller: xController,
                                         textAlignVertical: TextAlignVertical.center,
                                         maxLines: 1,
                                         style: Get.textTheme.bodyText2,
@@ -226,6 +317,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                       width: 82,
                                       height: 36,
                                       child: TextField(
+                                        controller: yController,
                                         textAlignVertical: TextAlignVertical.center,
                                         maxLines: 1,
                                         style: Get.textTheme.bodyText2,
@@ -241,7 +333,13 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                   backgroundColor: AppColors.LIGHT_GREEN,
                                   onPressed: () {
                                     Get.to(
-                                      CreationScreen(),
+                                      CreationScreen(
+                                        name: nameController.text,
+                                        date: dateController.text,
+                                        place: placeController.text,
+                                        rows: int.tryParse(xController.text) ?? 10,
+                                        columns: int.tryParse(yController.text) ?? 10,
+                                      ),
                                     );
                                   },
                                   label: Text(

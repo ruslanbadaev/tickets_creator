@@ -28,7 +28,7 @@ class _CreationDialogWidgetState extends State<CreationDialogWidget> {
             FadeInDown(
               child: TextField(
                 controller: controller.nameController,
-                style: const TextStyle(fontSize: 24),
+                style: Get.textTheme.bodyText2,
                 decoration: const InputDecoration(
                   labelText: 'Название:',
                 ),
@@ -42,11 +42,9 @@ class _CreationDialogWidgetState extends State<CreationDialogWidget> {
                 child: Column(
                   children: [
                     const SizedBox(height: 21),
-                    const Text(
+                    Text(
                       'Тип:',
-                      style: TextStyle(
-                        fontSize: 24,
-                      ),
+                      style: Get.textTheme.bodyText2,
                     ),
                     const SizedBox(height: 21),
                     Row(
@@ -63,8 +61,7 @@ class _CreationDialogWidgetState extends State<CreationDialogWidget> {
                                 children: [
                                   Text(
                                     'Сидячий билет',
-                                    style: TextStyle(
-                                      fontSize: 24,
+                                    style: Get.textTheme.bodyText2!.copyWith(
                                       fontWeight:
                                           controller.pointType == PointType.sit ? FontWeight.w700 : FontWeight.w400,
                                     ),
@@ -87,8 +84,7 @@ class _CreationDialogWidgetState extends State<CreationDialogWidget> {
                                 children: [
                                   Text(
                                     'Секторальный',
-                                    style: TextStyle(
-                                      fontSize: 24,
+                                    style: Get.textTheme.bodyText2!.copyWith(
                                       fontWeight:
                                           controller.pointType == PointType.sector ? FontWeight.w700 : FontWeight.w400,
                                     ),
@@ -114,10 +110,9 @@ class _CreationDialogWidgetState extends State<CreationDialogWidget> {
                             children: [
                               Text(
                                 'Сцена или другой объект',
-                                style: TextStyle(
-                                  fontSize: 24,
+                                style: Get.textTheme.bodyText2!.copyWith(
                                   fontWeight:
-                                      controller.pointType == PointType.object ? FontWeight.w700 : FontWeight.w400,
+                                      controller.pointType == PointType.sector ? FontWeight.w700 : FontWeight.w400,
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -133,7 +128,7 @@ class _CreationDialogWidgetState extends State<CreationDialogWidget> {
               FadeInDown(
                 child: TextField(
                   controller: controller.priceController,
-                  style: const TextStyle(fontSize: 24),
+                  style: Get.textTheme.bodyText2,
                   decoration: const InputDecoration(
                     labelText: 'Цена:',
                   ),

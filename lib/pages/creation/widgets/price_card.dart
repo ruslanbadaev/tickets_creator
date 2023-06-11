@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xl/xl.dart';
+import 'package:get/get.dart';
 
 import '../../../models/marker.dart';
-import '../../../models/price.dart';
-import '../../../utils/constants/colors.dart';
 
 class PriceCardWidget extends StatefulWidget {
   final MarkerModel price;
@@ -46,17 +44,13 @@ class _PriceCardWidgetState extends State<PriceCardWidget> {
                     if (widget.price.price != null && widget.price.price != '')
                       Row(
                         children: [
-                          const Text(
+                          Text(
                             'Цена: ',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
+                            style: Get.textTheme.bodyText2,
                           ),
                           Text(
                             widget.price.price ?? '?',
-                            style: const TextStyle(
-                              fontSize: 18,
-                            ),
+                            style: Get.textTheme.bodyText2,
                           ),
                         ],
                       ),
