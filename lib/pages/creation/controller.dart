@@ -40,6 +40,8 @@ class CreationScreenController extends GetxController with Utils {
             id: '0',
             name: 'x:$incrX|y:$incrY',
             color: Colors.grey,
+            row: incrX,
+            column: incrY,
           ),
         );
         incrY++;
@@ -50,6 +52,11 @@ class CreationScreenController extends GetxController with Utils {
   }
 
   setGridElement(int x, int y, MarkerModel? value) {
+    log(y.toString(), name: 'y');
+    log(x.toString(), name: 'x');
+    log((grid[x][y]?.name).toString(), name: 'grid[x][y]');
+    value?.row = x;
+    value?.column = y;
     grid[x][y] = value;
     update();
   }

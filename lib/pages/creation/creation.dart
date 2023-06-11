@@ -4,7 +4,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tickets/widgets/custom_app_bar.dart';
 
+import '../../mixins/utils.dart';
 import '../../models/marker.dart';
 import '../../models/price.dart';
 import '../../utils/constants/colors.dart';
@@ -59,6 +61,7 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                   });
                 },
                 child: CustomScaffold(
+                  appBar: CustomAppBar(titleString: 'Создание'),
                   backgroundColor: AppColors.WHITE,
                   body: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -141,21 +144,27 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                             scrollDirection: Axis.horizontal,
                             child: Column(
                               children: [
-                                for (List<MarkerModel?> x in controller.grid)
-                                  // for (var j = 0; j < 20; j++)
+                                // for (List<MarkerModel?> x in controller.grid)
+                                for (var incrX = 0; incrX < controller.grid.length; incrX++)
                                   Row(
                                     children: [
-                                      for (MarkerModel? y in x)
-                                        // for (var i = 0; i < 20; i++)
+                                      // for (MarkerModel? y in x)
+                                      for (var incrY = 0; incrY < controller.grid[incrX].length; incrY++)
                                         PlaceWidget(
                                           editing: edition && controller.selectedPrice != null,
                                           onHover: (marker) {
-                                            controller.setGridElement(controller.grid.indexOf(x), x.indexOf(y), marker);
+                                            controller.setGridElement(
+                                              controller.grid[incrX][incrY]?.row ?? 0,
+                                              controller.grid[incrX][incrY]?.column ?? 0,
+                                              marker,
+                                            );
+
                                             // log((marker?.row).toString());
                                           },
-                                          currentMarker: y,
+                                          currentMarker: controller.grid[incrX][incrY],
                                           marker: controller.selectedPrice,
-
+                                          x: controller.grid[incrX][incrY]?.row ?? 0,
+                                          y: controller.grid[incrX][incrY]?.column ?? 0,
                                           /* MarkerModel(
                                             id: controller.selectedPrice?.id ?? '??',
                                             name: controller.selectedPrice?.name ?? '?',
@@ -187,30 +196,37 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
   }
 }
 
-class PlaceWidget extends StatelessWidget {
+class PlaceWidget extends StatefulWidget {
   final Function(MarkerModel?) onHover;
   final MarkerModel? marker;
   final MarkerModel? currentMarker;
   final bool editing;
-  // final int x;
-  // final int y;
+  final int x;
+  final int y;
   const PlaceWidget({
     required this.editing,
     required this.onHover,
-    // required this.x,
-    // required this.y,
+    required this.x,
+    required this.y,
     this.marker,
     this.currentMarker,
     Key? key,
   }) : super(key: key);
+  @override
+  State<PlaceWidget> createState() => _PlaceWidgetState();
+}
 
+class _PlaceWidgetState extends State<PlaceWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        widget.onHover(widget.marker);
+      },
       child: MouseRegion(
         onEnter: (event) {
-          if (editing) {
-            onHover(marker);
+          if (widget.editing) {
+            widget.onHover(widget.marker);
             // setState(() {
             //   currentMarker = widget.marker;
             // });
@@ -222,12 +238,12 @@ class PlaceWidget extends StatelessWidget {
           children: [
             Icon(
               Icons.circle,
-              color: currentMarker?.color ?? Colors.grey,
+              color: widget.currentMarker?.color ?? Colors.grey,
             ),
             // Text(
-            //   (currentMarker?.name).toString(),
+            //   '${widget.currentMarker?.row}|${widget.currentMarker?.column}',
             //   style: TextStyle(
-            //     fontSize: 9,
+            //     fontSize: 13,
             //   ),
             //   textAlign: TextAlign.center,
             // )
@@ -237,6 +253,10 @@ class PlaceWidget extends StatelessWidget {
     );
   }
 }
+
+class PlaceWidgetController extends GetxController with Utils {}
+
+
 
 // class _PlaceWidgetState extends State<PlaceWidget> {
 //   MarkerModel? currentMarker;

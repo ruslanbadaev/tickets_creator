@@ -1,4 +1,5 @@
 import 'package:tickets/models/pack.dart';
+import 'package:tickets/pages/concerts/concerts.dart';
 import 'package:tickets/pages/generate/generate.dart';
 import 'package:tickets/utils/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -67,36 +68,36 @@ class AppState extends State<App> with TickerProviderStateMixin {
       init: AppController(),
       builder: (controller) {
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Get.theme.backgroundColor,
-            elevation: .5,
-            toolbarHeight: 42,
-            centerTitle: true,
-            title: RichText(
-              text: TextSpan(
-                children: <TextSpan>[
-                  TextSpan(
-                    text: '',
-                    style: context.textTheme.headline1!.copyWith(
-                      color: Get.theme.accentColor,
-                    ),
-                  ),
-                  const TextSpan(
-                    text: '',
-                  ),
-                  TextSpan(
-                    text: '',
-                    style: Get.textTheme.headline2!.copyWith(
-                      color: Get.theme.accentColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            actions: [],
-          ),
+          // appBar: AppBar(
+          //   backgroundColor: Get.theme.backgroundColor,
+          //   elevation: .5,
+          //   toolbarHeight: 42,
+          //   centerTitle: true,
+          //   title: RichText(
+          //     text: TextSpan(
+          //       children: <TextSpan>[
+          //         TextSpan(
+          //           text: '',
+          //           style: context.textTheme.headline1!.copyWith(
+          //             color: Get.theme.accentColor,
+          //           ),
+          //         ),
+          //         const TextSpan(
+          //           text: '',
+          //         ),
+          //         TextSpan(
+          //           text: '',
+          //           style: Get.textTheme.headline2!.copyWith(
+          //             color: Get.theme.accentColor,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          //   actions: [],
+          // ),
           backgroundColor: Get.theme.backgroundColor,
-          body: const CreationScreen(),
+          body: const ConcertsScreen(),
           // floatingActionButton: Padding(
           //   padding: const EdgeInsets.only(bottom: 56),
           //   child: FloatingActionButton.extended(

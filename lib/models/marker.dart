@@ -4,9 +4,8 @@ import 'package:tickets/pages/creation/controller.dart';
 class MarkerModel {
   final String id;
   final String name;
-
-  final int? row;
-  final int? column;
+  int? row;
+  int? column;
   final Color color;
   final String? price;
   final PointType? type;

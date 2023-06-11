@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tickets/utils/constants/colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? titleString;
@@ -52,27 +53,23 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: Get.theme.accentColor,
             ),
           ),
-      leading: Center(
-        child: InkWell(
-          onTap: () {
-            if (onBackPress == null) {
-              Get.back();
-            } else {
-              onBackPress!();
-            }
-          },
-          child: Text(
-            ' < ',
-            style: GoogleFonts.architectsDaughter(
-              textStyle: Get.theme.textTheme.headline4!.copyWith(
-                fontWeight: FontWeight.w400,
-                color: Get.theme.accentColor,
-                fontSize: 42,
+      leading: isShowBack
+          ? Center(
+              child: InkWell(
+                onTap: () {
+                  if (onBackPress == null) {
+                    Get.back();
+                  } else {
+                    onBackPress!();
+                  }
+                },
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: AppColors.DARK,
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
+            )
+          : null,
       actions: actions,
       backgroundColor: Get.theme.backgroundColor,
     );

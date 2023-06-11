@@ -36,48 +36,48 @@ class AppTextTheme {
     headline1: _w600head.copyWith(
       height: _height150,
       letterSpacing: _letterSpacing,
-      fontSize: 16.sp,
+      fontSize: 16,
     ),
     headline2: _w400head.copyWith(
       height: _height150,
       letterSpacing: _letterSpacing,
-      fontSize: 16.sp,
+      fontSize: 16,
     ),
     headline3: _w400.copyWith(
-      fontSize: 24.sp,
+      fontSize: 24,
       height: _height130,
       letterSpacing: _letterSpacing,
     ),
     headline4: _w400.copyWith(
-      fontSize: 20.sp,
+      fontSize: 20,
       height: _height150,
       letterSpacing: _letterSpacing,
     ),
     headline5: _w400.copyWith(
-      fontSize: 18.sp,
+      fontSize: 18,
       height: _height150,
       letterSpacing: _letterSpacing,
     ),
     headline6: _w400.copyWith(
-      fontSize: 16.sp,
+      fontSize: 16,
       height: _height150,
       letterSpacing: _letterSpacing,
     ),
     bodyText1: _w500.copyWith(
-      fontSize: 12.sp,
+      fontSize: 14,
       height: _height150,
       letterSpacing: _letterSpacing,
     ),
     bodyText2: _w400.copyWith(
-      fontSize: 10.sp,
+      fontSize: 14,
       height: _height150,
       letterSpacing: _letterSpacing,
     ),
     button: _w600.copyWith(
-      fontSize: 16.sp,
+      fontSize: 16,
     ),
     subtitle1: _w400.copyWith(
-      fontSize: 7.sp,
+      fontSize: 7,
       letterSpacing: _letterSpacing,
     ),
   );
