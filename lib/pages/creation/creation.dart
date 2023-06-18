@@ -160,6 +160,11 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                               // color: AppColors.LIGHT_GREY,
                               child: Column(
                                 children: [
+                                  // Row(
+                                  //   children: [
+                                  //     Text(controller.selectedPrice.toString(), style: Get.textTheme.bodyText1),
+                                  //   ],
+                                  // ),
                                   Row(
                                     children: [
                                       Text('id:', style: Get.textTheme.bodyText1),
@@ -217,8 +222,8 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                                               },
                                               onSelect: (marker) {
                                                 controller.setGridElement(
-                                                  controller.grid[incrX][incrY]?.row ?? 0,
-                                                  controller.grid[incrX][incrY]?.column ?? 0,
+                                                  incrX,
+                                                  incrY,
                                                   marker,
                                                 );
 
@@ -228,14 +233,6 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                                               marker: controller.selectedPrice,
                                               x: controller.grid[incrX][incrY]?.row ?? 0,
                                               y: controller.grid[incrX][incrY]?.column ?? 0,
-                                              /* MarkerModel(
-                                            id: controller.selectedPrice?.id ?? '??',
-                                            name: controller.selectedPrice?.name ?? '?',
-                                            color: controller.selectedPrice?.color ?? Colors.red,
-                                            type: controller.selectedPrice?.type,
-                                            row: controller.grid.indexOf(x),
-                                            column: x.indexOf(y),
-                                          ) */
                                             ),
                                         ],
                                       ),
@@ -301,7 +298,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
             //   currentMarker = widget.marker;
             // });
           } else {
-            widget.onHover(widget.marker);
+            widget.onHover(widget.currentMarker);
           }
         },
         // onHover: (event) {

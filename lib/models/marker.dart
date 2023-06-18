@@ -3,12 +3,12 @@ import 'package:tickets/pages/creation/controller.dart';
 
 class MarkerModel {
   final String id;
-  final String name;
-  int? row;
-  int? column;
-  final Color color;
-  final String? price;
-  final PointType? type;
+  final int? row;
+  final int? column;
+  String name;
+  Color color;
+  String? price;
+  PointType? type;
   MarkerModel({
     required this.id,
     required this.name,
@@ -18,4 +18,19 @@ class MarkerModel {
     this.price,
     this.type,
   });
+
+  @override
+  String toString() {
+    return '''
+      Recipient{
+        id: $id, 
+        name: $name, 
+        row: $row,
+        column: $column,
+        color: $color,
+        price: $price,
+        type: $type,
+      }
+      ''';
+  }
 }

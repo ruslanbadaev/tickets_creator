@@ -53,13 +53,23 @@ class CreationScreenController extends GetxController with Utils {
   }
 
   setGridElement(int x, int y, MarkerModel? value) {
-    log(y.toString(), name: 'y');
-    log(x.toString(), name: 'x');
-    log((grid[x][y]?.name).toString(), name: 'grid[x][y]');
-    value?.row = x;
-    value?.column = y;
-    grid[x][y] = value;
-    update();
+    try {
+      log('x:$x, y:$y');
+      // log(y.toString(), name: 'y');
+      // log(x.toString(), name: 'x');
+      // log((grid[x][y]?.name).toString(), name: 'grid[x][y]');
+      // value?.row = x;
+      // value?.column = y;
+      debugPrint(grid[x][y].toString());
+      debugPrint(value.toString());
+      grid[x][y]?.name = value?.name ?? '?';
+      grid[x][y]?.price = value?.price;
+      grid[x][y]?.color = value?.color ?? Colors.grey;
+      grid[x][y]?.type = value?.type;
+      update();
+    } catch (e) {
+      log(e.toString(), name: 'setGridElement error');
+    }
   }
 
   void selectPrice(MarkerModel price) {

@@ -17,9 +17,7 @@ void main() async {
   MobileAds.instance.initialize();
   // FlutterYandexAds.initialize();
   WidgetsFlutterBinding.ensureInitialized();
-
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
