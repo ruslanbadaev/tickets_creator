@@ -14,10 +14,10 @@ import 'package:sizer/sizer.dart';
 
 void main() async {
   await GetStorage.init();
-  MobileAds.instance.initialize();
+  // MobileAds.instance.initialize();
   // FlutterYandexAds.initialize();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.web);
   runApp(const MyApp());
 }
 

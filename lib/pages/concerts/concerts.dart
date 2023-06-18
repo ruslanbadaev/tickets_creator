@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:tickets/models/concert.dart';
 
 import '../../mixins/utils.dart';
 import '../../utils/constants/colors.dart';
@@ -402,6 +403,9 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                     ),
                   ],
                 ),
+                floatingActionButton: FloatingActionButton(onPressed: () {
+                  ConcertModel.save({});
+                }),
               );
       },
     );

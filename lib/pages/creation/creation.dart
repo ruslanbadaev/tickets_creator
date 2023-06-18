@@ -306,21 +306,87 @@ class _PlaceWidgetState extends State<PlaceWidget> {
         //   widget.onHover(widget.marker);
         // },
         cursor: SystemMouseCursors.grab,
-        child: Stack(
-          children: [
-            Icon(
-              Icons.circle,
-              color: widget.currentMarker?.color ?? Colors.grey,
-            ),
-            // Text(
-            //   '${widget.currentMarker?.row}|${widget.currentMarker?.column}',
-            //   style: TextStyle(
-            //     fontSize: 13,
-            //   ),
-            //   textAlign: TextAlign.center,
-            // )
-          ],
-        ),
+        child: widget.editing
+            ? SizedBox(
+                height: 25,
+                width: 25,
+                // margin: EdgeInsets.all(0),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (widget.currentMarker?.type == null)
+                      Container(
+                        alignment: Alignment.center,
+                        height: 7,
+                        width: 7,
+                        decoration: BoxDecoration(
+                          color: widget.currentMarker?.color ?? Colors.grey,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      )
+                    else
+                      Container(
+                        alignment: Alignment.center,
+                        height: 15,
+                        width: 15,
+                        decoration: BoxDecoration(
+                          color: widget.currentMarker?.color ?? Colors.grey,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                  ],
+                ),
+              )
+            : Stack(
+                children: [
+                  Container(
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(
+                    //     color: AppColors.DARK,
+                    //     width: 2,
+                    //   ),
+                    // ),
+                    height: 25,
+                    width: 25,
+                    // margin: EdgeInsets.all(0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (widget.currentMarker?.type == null)
+                          Container(
+                            alignment: Alignment.center,
+                            height: 7,
+                            width: 7,
+                            decoration: BoxDecoration(
+                              color: widget.currentMarker?.color ?? Colors.grey,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          )
+                        else
+                          widget.currentMarker?.type == PointType.sit
+                              ? Container(
+                                  alignment: Alignment.center,
+                                  height: 15,
+                                  width: 15,
+                                  decoration: BoxDecoration(
+                                    color: widget.currentMarker?.color ?? Colors.grey,
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                )
+                              : Container(
+                                  alignment: Alignment.center,
+                                  height: 25,
+                                  width: 25,
+                                  decoration: BoxDecoration(
+                                    color: widget.currentMarker?.color ?? Colors.grey,
+                                    // borderRadius: BorderRadius.circular(100),
+                                  ),
+                                ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
       ),
     );
   }
