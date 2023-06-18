@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../mixins/utils.dart';
 import '../../utils/constants/colors.dart';
@@ -29,6 +33,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
 
   @override
   void initState() {
+    dateController = TextEditingController(text: DateTime.now().toString());
     super.initState();
   }
 
@@ -43,7 +48,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
         return controller.isLoading
             ? const LiteLoadingScreen()
             : CustomScaffold(
-                appBar: CustomAppBar(
+                appBar: const CustomAppBar(
                   titleString: 'Концерты',
                   isShowBack: false,
                 ),
@@ -61,7 +66,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                         Row(
                           children: [
                             Card(
-                              margin: EdgeInsets.symmetric(vertical: 6),
+                              margin: const EdgeInsets.symmetric(vertical: 6),
                               color: AppColors.WHITE,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -92,7 +97,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                         Row(
                           children: [
                             Card(
-                              margin: EdgeInsets.symmetric(vertical: 6),
+                              margin: const EdgeInsets.symmetric(vertical: 6),
                               color: AppColors.WHITE,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -123,7 +128,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                         Row(
                           children: [
                             Card(
-                              margin: EdgeInsets.symmetric(vertical: 6),
+                              margin: const EdgeInsets.symmetric(vertical: 6),
                               color: AppColors.WHITE,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -154,7 +159,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                         Row(
                           children: [
                             Card(
-                              margin: EdgeInsets.symmetric(vertical: 6),
+                              margin: const EdgeInsets.symmetric(vertical: 6),
                               color: AppColors.WHITE,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -232,20 +237,62 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                       'Дата:  ',
                                       style: Get.textTheme.bodyText2,
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(vertical: 6),
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                                      color: Colors.grey[200],
-                                      width: 200,
-                                      height: 36,
-                                      child: TextField(
-                                        controller: dateController,
-                                        textAlignVertical: TextAlignVertical.center,
-                                        maxLines: 1,
-                                        style: Get.textTheme.bodyText2,
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
+                                    InkWell(
+                                      onTap: () {
+                                        Get.defaultDialog(
+                                          content: SizedBox(
+                                            height: 500,
+                                            width: 500,
+                                            child: DateTimePicker(
+                                              // controller: dateController,
+                                              type: DateTimePickerType.dateTimeSeparate,
+                                              dateMask: 'd MMM, yyyy',
+                                              initialValue: DateTime.now().toString(),
+                                              firstDate: DateTime(2000),
+                                              lastDate: DateTime(2100),
+                                              icon: const Icon(Icons.event),
+                                              dateLabelText: 'Date',
+                                              timeLabelText: "Hour",
+                                              // selectableDayPredicate: (date) {
+                                              //   // // Disable weekend days to select from the calendar
+                                              //   // if (date.weekday == 6 || date.weekday == 7) {
+                                              //   //   return false;
+                                              //   // }
+
+                                              //   // return true;
+                                              // },
+
+                                              onChanged: (val) {
+                                                dateController.text = val;
+                                                setState(() {});
+                                              },
+                                              validator: (val) {
+                                                print(val);
+                                                return null;
+                                              },
+                                              onSaved: (val) => {
+                                                log(val.toString(), name: 'save'),
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(vertical: 6),
+                                        alignment: Alignment.center,
+                                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                                        color: Colors.grey[200],
+                                        width: 200,
+                                        height: 36,
+                                        child: TextField(
+                                          controller: dateController,
+                                          enabled: false,
+                                          textAlignVertical: TextAlignVertical.center,
+                                          maxLines: 1,
+                                          style: Get.textTheme.bodyText2,
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none,
+                                          ),
                                         ),
                                       ),
                                     ),

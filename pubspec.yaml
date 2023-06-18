@@ -72,6 +72,7 @@ dependencies:
   google_mobile_ads: 2.3.0
   remove_background: 0.0.1
   flutter_painter: 1.0.1
+  syncfusion_flutter_datepicker: 20.3.61
 
 dev_dependencies:
   flutter_test:

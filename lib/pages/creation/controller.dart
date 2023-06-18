@@ -11,6 +11,7 @@ enum PointType { sit, sector, object }
 
 class CreationScreenController extends GetxController with Utils {
   MarkerModel? _selectedPrice;
+  MarkerModel? _hoveredPrice;
   PointType? _pointType;
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -20,6 +21,7 @@ class CreationScreenController extends GetxController with Utils {
   List<MarkerModel> prices = [];
 
   MarkerModel? get selectedPrice => _selectedPrice;
+  MarkerModel? get hoveredPrice => _hoveredPrice;
   PointType? get pointType => _pointType;
 
   @override
@@ -63,6 +65,11 @@ class CreationScreenController extends GetxController with Utils {
   void selectPrice(MarkerModel price) {
     _selectedPrice = price;
 
+    update();
+  }
+
+  void hoverItem(MarkerModel? price) {
+    _hoveredPrice = price;
     update();
   }
 

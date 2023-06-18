@@ -150,36 +150,85 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                         ),
                       ),
                       SizedBox(width: 24),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        child: SingleChildScrollView(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 16),
-                                // for (List<MarkerModel?> x in controller.grid)
-                                for (var incrX = 0; incrX < controller.grid.length; incrX++)
+                      Column(
+                        children: [
+                          SizedBox(height: 24),
+                          Card(
+                            child: Container(
+                              width: 220,
+                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              // color: AppColors.LIGHT_GREY,
+                              child: Column(
+                                children: [
                                   Row(
                                     children: [
-                                      // for (MarkerModel? y in x)
-                                      for (var incrY = 0; incrY < controller.grid[incrX].length; incrY++)
-                                        PlaceWidget(
-                                          editing: edition && controller.selectedPrice != null,
-                                          onHover: (marker) {
-                                            controller.setGridElement(
-                                              controller.grid[incrX][incrY]?.row ?? 0,
-                                              controller.grid[incrX][incrY]?.column ?? 0,
-                                              marker,
-                                            );
+                                      Text('id:', style: Get.textTheme.bodyText1),
+                                      Text(controller.hoveredPrice?.id ?? '---', style: Get.textTheme.bodyText2),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text('Имя:', style: Get.textTheme.bodyText1),
+                                      Text(controller.hoveredPrice?.name ?? '---', style: Get.textTheme.bodyText2),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text('Цена:', style: Get.textTheme.bodyText1),
+                                      Text(controller.hoveredPrice?.price ?? '---', style: Get.textTheme.bodyText2),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text('X: ', style: Get.textTheme.bodyText1),
+                                      Text(
+                                        controller.hoveredPrice?.row.toString() ?? '---',
+                                        style: Get.textTheme.bodyText2,
+                                      ),
+                                      Text('  Y:', style: Get.textTheme.bodyText1),
+                                      Text(
+                                        controller.hoveredPrice?.column.toString() ?? '---',
+                                        style: Get.textTheme.bodyText2,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12),
+                            child: SingleChildScrollView(
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  children: [
+                                    const SizedBox(height: 0),
+                                    // for (List<MarkerModel?> x in controller.grid)
+                                    for (var incrX = 0; incrX < controller.grid.length; incrX++)
+                                      Row(
+                                        children: [
+                                          // for (MarkerModel? y in x)
+                                          for (var incrY = 0; incrY < controller.grid[incrX].length; incrY++)
+                                            PlaceWidget(
+                                              editing: edition && controller.selectedPrice != null,
+                                              onHover: (marker) {
+                                                controller.hoverItem(marker);
+                                              },
+                                              onSelect: (marker) {
+                                                controller.setGridElement(
+                                                  controller.grid[incrX][incrY]?.row ?? 0,
+                                                  controller.grid[incrX][incrY]?.column ?? 0,
+                                                  marker,
+                                                );
 
-                                            // log((marker?.row).toString());
-                                          },
-                                          currentMarker: controller.grid[incrX][incrY],
-                                          marker: controller.selectedPrice,
-                                          x: controller.grid[incrX][incrY]?.row ?? 0,
-                                          y: controller.grid[incrX][incrY]?.column ?? 0,
-                                          /* MarkerModel(
+                                                // log((marker?.row).toString());
+                                              },
+                                              currentMarker: controller.grid[incrX][incrY],
+                                              marker: controller.selectedPrice,
+                                              x: controller.grid[incrX][incrY]?.row ?? 0,
+                                              y: controller.grid[incrX][incrY]?.column ?? 0,
+                                              /* MarkerModel(
                                             id: controller.selectedPrice?.id ?? '??',
                                             name: controller.selectedPrice?.name ?? '?',
                                             color: controller.selectedPrice?.color ?? Colors.red,
@@ -187,14 +236,16 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                                             row: controller.grid.indexOf(x),
                                             column: x.indexOf(y),
                                           ) */
-                                        ),
-                                    ],
-                                  ),
-                                const SizedBox(height: 72),
-                              ],
+                                            ),
+                                        ],
+                                      ),
+                                    const SizedBox(height: 72),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
@@ -207,6 +258,7 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
 
 class PlaceWidget extends StatefulWidget {
   final Function(MarkerModel?) onHover;
+  final Function(MarkerModel?) onSelect;
   final MarkerModel? marker;
   final MarkerModel? currentMarker;
   final bool editing;
@@ -215,6 +267,7 @@ class PlaceWidget extends StatefulWidget {
   const PlaceWidget({
     required this.editing,
     required this.onHover,
+    required this.onSelect,
     required this.x,
     required this.y,
     this.marker,
@@ -230,18 +283,31 @@ class _PlaceWidgetState extends State<PlaceWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.onHover(widget.marker);
+        if (widget.marker == null) {
+          Get.snackbar('Внимание', 'Создай метку слева');
+        } else {
+          widget.onSelect(widget.marker);
+        }
       },
       child: MouseRegion(
         onEnter: (event) {
           if (widget.editing) {
-            widget.onHover(widget.marker);
+            if (widget.marker == null) {
+              Get.snackbar('Внимание', 'Создай метку слева');
+            } else {
+              widget.onSelect(widget.marker);
+            }
             // setState(() {
             //   currentMarker = widget.marker;
             // });
-          } else {}
+          } else {
+            widget.onHover(widget.marker);
+          }
         },
-        onHover: (event) {},
+        // onHover: (event) {
+
+        //   widget.onHover(widget.marker);
+        // },
         cursor: SystemMouseCursors.grab,
         child: Stack(
           children: [
