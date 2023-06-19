@@ -1,14 +1,13 @@
 import 'dart:developer';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:tickets/models/concert.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../mixins/utils.dart';
+import '../../models/concert.dart';
 import '../../utils/constants/colors.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_scaffold.dart';
@@ -35,6 +34,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
   @override
   void initState() {
     dateController = TextEditingController(text: DateTime.now().toString());
+
     super.initState();
   }
 
@@ -64,130 +64,41 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                           style: Get.textTheme.bodyText1,
                         ),
                         const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Card(
-                              margin: const EdgeInsets.symmetric(vertical: 6),
-                              color: AppColors.WHITE,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12),
-                                alignment: Alignment.center,
-                                height: 64,
-                                child: Text(
-                                  'Подгорица 23.06.2023',
-                                  style: Get.textTheme.bodyText2,
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: const Card(
-                                elevation: 5,
-                                child: SizedBox(
+                        for (ConcertModel concert in controller.allConcerts)
+                          Row(
+                            children: [
+                              Card(
+                                margin: const EdgeInsets.symmetric(vertical: 6),
+                                color: AppColors.WHITE,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                                  alignment: Alignment.center,
                                   height: 64,
-                                  width: 64,
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.redAccent,
+                                  child: Text(
+                                    concert.name,
+                                    style: Get.textTheme.bodyText2,
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Card(
-                              margin: const EdgeInsets.symmetric(vertical: 6),
-                              color: AppColors.WHITE,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12),
-                                alignment: Alignment.center,
-                                height: 64,
-                                child: Text(
-                                  'Подгорица 23.06.2023',
-                                  style: Get.textTheme.bodyText2,
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: const Card(
-                                elevation: 5,
-                                child: SizedBox(
-                                  height: 64,
-                                  width: 64,
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.redAccent,
+                              InkWell(
+                                onTap: () async {
+                                  await ConcertModel.delete(concert.id);
+                                  await controller.getAllItems();
+                                },
+                                child: const Card(
+                                  elevation: 5,
+                                  child: SizedBox(
+                                    height: 64,
+                                    width: 64,
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.redAccent,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Card(
-                              margin: const EdgeInsets.symmetric(vertical: 6),
-                              color: AppColors.WHITE,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12),
-                                alignment: Alignment.center,
-                                height: 64,
-                                child: Text(
-                                  'Подгорица 23.06.2023',
-                                  style: Get.textTheme.bodyText2,
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: const Card(
-                                elevation: 5,
-                                child: SizedBox(
-                                  height: 64,
-                                  width: 64,
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.redAccent,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Card(
-                              margin: const EdgeInsets.symmetric(vertical: 6),
-                              color: AppColors.WHITE,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12),
-                                alignment: Alignment.center,
-                                height: 64,
-                                child: Text(
-                                  'Подгорица 23.06.2023',
-                                  style: Get.textTheme.bodyText2,
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: const Card(
-                                elevation: 5,
-                                child: SizedBox(
-                                  height: 64,
-                                  width: 64,
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.redAccent,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
                       ],
                     ),
                     const SizedBox(width: 24),
@@ -380,6 +291,14 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                 FloatingActionButton.extended(
                                   backgroundColor: AppColors.LIGHT_GREEN,
                                   onPressed: () {
+                                    ConcertModel.save({
+                                      // 'id': const Uuid().v4(),
+                                      'name': nameController.text,
+                                      'createdAt': dateController.text,
+                                      'place': placeController.text,
+                                      'row': xController.text,
+                                      'column': yController.text,
+                                    });
                                     Get.to(
                                       CreationScreen(
                                         name: nameController.text,
@@ -403,9 +322,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                     ),
                   ],
                 ),
-                floatingActionButton: FloatingActionButton(onPressed: () {
-                  ConcertModel.save({});
-                }),
+                floatingActionButton: FloatingActionButton(onPressed: () {}),
               );
       },
     );
