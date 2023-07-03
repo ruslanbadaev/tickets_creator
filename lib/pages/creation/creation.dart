@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../mixins/utils.dart';
+import '../../models/concert.dart';
 import '../../models/marker.dart';
 import '../../utils/constants/colors.dart';
 import '../../widgets/custom_app_bar.dart';
@@ -15,6 +16,7 @@ import 'widgets/creation_dialog.dart';
 import 'widgets/price_card.dart';
 
 class CreationScreen extends StatefulWidget {
+  final String id;
   final String name;
   final String date;
   final String place;
@@ -23,6 +25,7 @@ class CreationScreen extends StatefulWidget {
 
   const CreationScreen({
     Key? key,
+    required this.id,
     required this.name,
     required this.date,
     required this.place,
@@ -185,12 +188,12 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                                   ),
                                   Row(
                                     children: [
-                                      Text('X: ', style: Get.textTheme.bodyText1),
+                                      Text('Место: ', style: Get.textTheme.bodyText1),
                                       Text(
                                         controller.hoveredPrice?.row.toString() ?? '---',
                                         style: Get.textTheme.bodyText2,
                                       ),
-                                      Text('  Y:', style: Get.textTheme.bodyText1),
+                                      Text('  Ряд: ', style: Get.textTheme.bodyText1),
                                       Text(
                                         controller.hoveredPrice?.column.toString() ?? '---',
                                         style: Get.textTheme.bodyText2,
@@ -242,6 +245,32 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                               ),
                             ),
                           ),
+                          const SizedBox(height: 12),
+                          FloatingActionButton.extended(
+                            backgroundColor: AppColors.LIGHT_GREEN,
+                            onPressed: () {
+                              ConcertModel.update(widget.id, {
+                                'name': widget.name,
+                                'createdAt': widget.date,
+                                'place': widget.place,
+                                'row': widget.rows,
+                                'column': widget.columns,
+                              });
+                              // Get.to(
+                              //   CreationScreen(
+                              //     name: nameController.text,
+                              //     date: dateController.text,
+                              //     place: placeController.text,
+                              //     rows: int.tryParse(xController.text) ?? 10,
+                              //     columns: int.tryParse(yController.text) ?? 10,
+                              //   ),
+                              // );
+                            },
+                            label: Text(
+                              'Сохранить',
+                              style: Get.textTheme.bodyText1!.copyWith(color: AppColors.WHITE),
+                            ),
+                          )
                         ],
                       ),
                     ],

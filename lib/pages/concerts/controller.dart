@@ -14,14 +14,29 @@ class ConcertsScreenController extends GetxController with Utils {
   @override
   void onReady() async {
     super.onReady();
+
     _allConcerts.addAll((await ConcertModel.getAll())!.data);
     log(_allConcerts.toString());
+
     update();
   }
 
   Future<void> getAllItems() async {
+    startLoading();
+    update();
+    _allConcerts.clear();
     _allConcerts.addAll((await ConcertModel.getAll())!.data);
     log(_allConcerts.toString());
+    endLoading();
+    update();
+  }
+
+  Future<void> save(Map<String, dynamic> data) async {
+    startLoading();
+    update();
+    await ConcertModel.save(data);
+    await getAllItems();
+    endLoading();
     update();
   }
 }

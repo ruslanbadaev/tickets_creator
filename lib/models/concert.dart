@@ -112,7 +112,8 @@ class ConcertModel {
       return ResultModel(
         status: ResultStatus.success,
         data: ConcertModel(
-          id: data?['id'] ?? '??',
+          // id: data?['id'] ?? '??',
+          id: snapshot.id,
           name: data?['name'] ?? '??',
           place: data?['place'] ?? '??',
           createdAt: DateTime.tryParse((data?['createdAt'] ?? '')),
@@ -122,6 +123,23 @@ class ConcertModel {
       );
     } catch (e) {
       log(e.toString());
+      return ResultModel(
+        status: ResultStatus.error,
+        message: e.toString(),
+      );
+    }
+  }
+
+  static Future<ResultModel> update(String id, Map<String, dynamic> json) async {
+    try {
+      log(id.toString());
+      final collection = FirebaseFirestore.instance.collection('concerts');
+      await collection.doc(id).update(json);
+
+      return ResultModel(
+        status: ResultStatus.success,
+      );
+    } catch (e) {
       return ResultModel(
         status: ResultStatus.error,
         message: e.toString(),

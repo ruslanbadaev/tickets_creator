@@ -1,10 +1,8 @@
 import 'dart:developer';
 
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../mixins/utils.dart';
 import '../../models/concert.dart';
@@ -24,7 +22,7 @@ class ConcertsScreen extends StatefulWidget {
   ConcertsScreenState createState() => ConcertsScreenState();
 }
 
-class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderStateMixin {
+class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderStateMixin, Utils {
   TextEditingController nameController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController placeController = TextEditingController();
@@ -57,6 +55,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 24),
                         Text(
@@ -67,16 +66,30 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                         for (ConcertModel concert in controller.allConcerts)
                           Row(
                             children: [
-                              Card(
-                                margin: const EdgeInsets.symmetric(vertical: 6),
-                                color: AppColors.WHITE,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                                  alignment: Alignment.center,
-                                  height: 64,
-                                  child: Text(
-                                    concert.name,
-                                    style: Get.textTheme.bodyText2,
+                              InkWell(
+                                onTap: () {
+                                  Get.to(
+                                    CreationScreen(
+                                      id: concert.id,
+                                      name: concert.name,
+                                      date: concert.createdAt.toString(),
+                                      place: concert.place,
+                                      rows: int.tryParse(concert.row ?? '') ?? 10,
+                                      columns: int.tryParse(concert.column ?? '') ?? 10,
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  margin: const EdgeInsets.symmetric(vertical: 6),
+                                  color: AppColors.WHITE,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                                    alignment: Alignment.center,
+                                    height: 64,
+                                    child: Text(
+                                      concert.name,
+                                      style: Get.textTheme.bodyText2,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -153,18 +166,19 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                       onTap: () {
                                         Get.defaultDialog(
                                           content: SizedBox(
-                                            height: 500,
-                                            width: 500,
+                                            // height: 500,
+                                            // width: 500,
                                             child: DateTimePicker(
                                               // controller: dateController,
+                                              style: Get.textTheme.bodyText1,
                                               type: DateTimePickerType.dateTimeSeparate,
                                               dateMask: 'd MMM, yyyy',
                                               initialValue: DateTime.now().toString(),
-                                              firstDate: DateTime(2000),
-                                              lastDate: DateTime(2100),
+                                              firstDate: DateTime(2023),
+                                              lastDate: DateTime(2043),
                                               icon: const Icon(Icons.event),
-                                              dateLabelText: 'Date',
-                                              timeLabelText: "Hour",
+                                              dateLabelText: 'Дата',
+                                              timeLabelText: "Время",
                                               // selectableDayPredicate: (date) {
                                               //   // // Disable weekend days to select from the calendar
                                               //   // if (date.weekday == 6 || date.weekday == 7) {
@@ -290,8 +304,8 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                 const SizedBox(height: 12),
                                 FloatingActionButton.extended(
                                   backgroundColor: AppColors.LIGHT_GREEN,
-                                  onPressed: () {
-                                    ConcertModel.save({
+                                  onPressed: () async {
+                                    controller.save({
                                       // 'id': const Uuid().v4(),
                                       'name': nameController.text,
                                       'createdAt': dateController.text,
@@ -299,21 +313,12 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                       'row': xController.text,
                                       'column': yController.text,
                                     });
-                                    Get.to(
-                                      CreationScreen(
-                                        name: nameController.text,
-                                        date: dateController.text,
-                                        place: placeController.text,
-                                        rows: int.tryParse(xController.text) ?? 10,
-                                        columns: int.tryParse(yController.text) ?? 10,
-                                      ),
-                                    );
                                   },
                                   label: Text(
                                     'Создать',
                                     style: Get.textTheme.bodyText1!.copyWith(color: AppColors.WHITE),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -322,7 +327,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                     ),
                   ],
                 ),
-                floatingActionButton: FloatingActionButton(onPressed: () {}),
+                // floatingActionButton: FloatingActionButton(onPressed: () {}),
               );
       },
     );
