@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tickets/models/concert.dart';
 
 import '../../mixins/utils.dart';
 import '../../models/marker.dart';
@@ -43,6 +44,7 @@ class CreationScreenController extends GetxController with Utils {
             color: Colors.grey,
             row: incrX,
             column: incrY,
+            concertId: 'cdcx',
           ),
         );
         incrY++;
@@ -100,6 +102,11 @@ class CreationScreenController extends GetxController with Utils {
   void selectPointType(PointType type) {
     log(type.toString());
     _pointType = type;
+    update();
+  }
+
+  void updateConcert(String id, Map<String, dynamic> json) {
+    ConcertModel.update(id, json);
     update();
   }
 }

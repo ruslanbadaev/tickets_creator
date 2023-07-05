@@ -6,11 +6,14 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
 
 import '../../../models/marker.dart';
-import '../../../models/price.dart';
 import '../controller.dart';
 
 class CreationDialogWidget extends StatefulWidget {
-  const CreationDialogWidget({super.key});
+  final String concertId;
+  const CreationDialogWidget({
+    super.key,
+    required this.concertId,
+  });
 
   @override
   State<CreationDialogWidget> createState() => _CreationDialogWidgetState();
@@ -146,6 +149,7 @@ class _CreationDialogWidgetState extends State<CreationDialogWidget> {
                     controller.createPrice(
                       MarkerModel(
                         id: (rng.nextInt(100)).toString(),
+                        concertId: widget.concertId,
                         name: controller.nameController.text,
                         price: controller.priceController.text,
                         type: controller.pointType!,

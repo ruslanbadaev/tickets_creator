@@ -11,6 +11,8 @@ class ConcertModel {
   final DateTime? createdAt;
   final String? row;
   final String? column;
+  final List? grid;
+  final List? prices;
 
   ConcertModel({
     required this.id,
@@ -19,6 +21,8 @@ class ConcertModel {
     required this.createdAt,
     required this.row,
     required this.column,
+    required this.grid,
+    required this.prices,
   });
 
   static Future<ResultModel> save(Map<String, dynamic> json) async {
@@ -119,6 +123,8 @@ class ConcertModel {
           createdAt: DateTime.tryParse((data?['createdAt'] ?? '')),
           row: data?['row'] ?? '??',
           column: data?['column'] ?? '??',
+          grid: data?['grid'],
+          prices: data?['prices'],
         ),
       );
     } catch (e) {
@@ -167,7 +173,7 @@ class ConcertModel {
   @override
   String toString() {
     return '''
-      Recipient{
+      ConcertModel{
         id: $id, 
         name: $name, 
         place: $place,

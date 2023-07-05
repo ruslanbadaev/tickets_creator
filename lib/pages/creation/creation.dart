@@ -120,7 +120,9 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                                             Get.defaultDialog(
                                               title: '  Создание метки  ',
                                               titleStyle: Get.textTheme.bodyText1,
-                                              content: const CreationDialogWidget(),
+                                              content: CreationDialogWidget(
+                                                concertId: widget.id,
+                                              ),
                                             );
                                           },
                                           child: const Card(
@@ -152,14 +154,14 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                           ],
                         ),
                       ),
-                      SizedBox(width: 24),
+                      const SizedBox(width: 24),
                       Column(
                         children: [
-                          SizedBox(height: 24),
+                          const SizedBox(height: 24),
                           Card(
                             child: Container(
                               width: 220,
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                               // color: AppColors.LIGHT_GREY,
                               child: Column(
                                 children: [
@@ -205,7 +207,7 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 12),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
                             child: SingleChildScrollView(
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
