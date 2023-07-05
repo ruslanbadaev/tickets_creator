@@ -86,6 +86,16 @@ class CreationScreenController extends GetxController with Utils {
   }
 
   void createPrice(MarkerModel price) {
+    MarkerModel.merge(
+      {
+        'concertId': price.concertId,
+        'name': price.name,
+        'price': price.price,
+        'type': price.type?.name,
+        'color': price.color.toString(),
+      },
+      toGrid: false,
+    );
     prices.add(price);
     nameController.clear();
     priceController.clear();

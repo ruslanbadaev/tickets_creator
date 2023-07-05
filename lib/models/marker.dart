@@ -54,11 +54,11 @@ class MarkerModel {
     );
   }
 
-  static Future<ResultModel> save(Map<String, dynamic> json) async {
+  static Future<ResultModel> save(Map<String, dynamic> json, {required bool toGrid}) async {
     try {
-      final collection = FirebaseFirestore.instance.collection('markers');
+      final collection = FirebaseFirestore.instance.collection(toGrid ? 'grid' : 'markers');
       json['createdAt'] = DateTime.now().toString();
-      await collection.doc().set(json);
+      await collection.doc().set(json, SetOptions());
 
       return ResultModel(
         status: ResultStatus.success,
@@ -71,12 +71,29 @@ class MarkerModel {
     }
   }
 
-  static Future<ResultModel?> getAll() async {
+  static Future<ResultModel> merge(Map<String, dynamic> json, {required bool toGrid}) async {
+    try {
+      final collection = FirebaseFirestore.instance.collection(toGrid ? 'grid' : 'markers');
+      json['createdAt'] = DateTime.now().toString();
+      await collection.doc().set(json, SetOptions(merge: true));
+
+      return ResultModel(
+        status: ResultStatus.success,
+      );
+    } catch (e) {
+      return ResultModel(
+        status: ResultStatus.error,
+        message: e.toString(),
+      );
+    }
+  }
+
+  static Future<ResultModel?> getAll({required bool toGrid}) async {
     try {
       final db = FirebaseFirestore.instance;
       Query<Map<String, dynamic>>? data;
       List<MarkerModel> allResults = [];
-      data = db.collection("markers").limit(100).orderBy('createdAt');
+      data = db.collection(toGrid ? 'grid' : 'markers').orderBy('createdAt');
 
       var documentSnapshots = await data.get();
       for (QueryDocumentSnapshot<Map<String, dynamic>> element in documentSnapshots.docs) {
@@ -106,13 +123,13 @@ class MarkerModel {
     }
   }
 
-  static Future<ResultModel> get() async {
+  static Future<ResultModel> get({required bool toGrid}) async {
     try {
       ResultModel? result;
       final db = FirebaseFirestore.instance;
       DocumentReference<Map<String, dynamic>> data;
 
-      data = db.collection("markers").doc();
+      data = db.collection(toGrid ? 'grid' : 'markers').doc();
 
       data.get().then(
         (documentSnapshots) async {
@@ -166,10 +183,10 @@ class MarkerModel {
     }
   }
 
-  static Future<ResultModel> update(String id, Map<String, dynamic> json) async {
+  static Future<ResultModel> update(String id, Map<String, dynamic> json, {required bool toGrid}) async {
     try {
       log(id.toString());
-      final collection = FirebaseFirestore.instance.collection('markers');
+      final collection = FirebaseFirestore.instance.collection(toGrid ? 'grid' : 'markers');
       await collection.doc(id).update(json);
 
       return ResultModel(
@@ -183,10 +200,10 @@ class MarkerModel {
     }
   }
 
-  static Future<ResultModel> delete(String id) async {
+  static Future<ResultModel> delete(String id, {required bool toGrid}) async {
     try {
       log(id.toString());
-      final collection = FirebaseFirestore.instance.collection('markers');
+      final collection = FirebaseFirestore.instance.collection(toGrid ? 'grid' : 'markers');
       await collection.doc(id).delete();
 
       return ResultModel(

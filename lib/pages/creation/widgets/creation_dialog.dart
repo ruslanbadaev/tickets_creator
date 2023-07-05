@@ -146,6 +146,7 @@ class _CreationDialogWidgetState extends State<CreationDialogWidget> {
                   pickerColor: Colors.red,
                   onColorChanged: (color) {
                     var rng = Random();
+
                     controller.createPrice(
                       MarkerModel(
                         id: (rng.nextInt(100)).toString(),
