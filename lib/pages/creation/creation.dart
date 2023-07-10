@@ -50,7 +50,8 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
     edition = false;
     super.initState();
     initGrid();
-
+    controller.getAllMarkersByConcertId(widget.id);
+    controller.getGridByConcertId(widget.id);
     animationController = AnimationController(vsync: this);
   }
 
@@ -190,14 +191,14 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                                   ),
                                   Row(
                                     children: [
-                                      Text('Место: ', style: Get.textTheme.bodyText1),
+                                      Text('Место:x ', style: Get.textTheme.bodyText1),
                                       Text(
-                                        controller.hoveredPrice?.row.toString() ?? '---',
+                                        controller.hoveredPrice?.x.toString() ?? '---',
                                         style: Get.textTheme.bodyText2,
                                       ),
-                                      Text('  Ряд: ', style: Get.textTheme.bodyText1),
+                                      Text('  Ряд:y ', style: Get.textTheme.bodyText1),
                                       Text(
-                                        controller.hoveredPrice?.column.toString() ?? '---',
+                                        controller.hoveredPrice?.y.toString() ?? '---',
                                         style: Get.textTheme.bodyText2,
                                       ),
                                     ],
@@ -236,8 +237,8 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                                               },
                                               currentMarker: controller.grid[incrX][incrY],
                                               marker: controller.selectedPrice,
-                                              x: controller.grid[incrX][incrY]?.row ?? 0,
-                                              y: controller.grid[incrX][incrY]?.column ?? 0,
+                                              x: controller.grid[incrX][incrY].x ?? 0,
+                                              y: controller.grid[incrX][incrY].y ?? 0,
                                             ),
                                         ],
                                       ),
@@ -251,14 +252,16 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                           FloatingActionButton.extended(
                             backgroundColor: AppColors.LIGHT_GREEN,
                             onPressed: () {
-                              ConcertModel.update(widget.id, {
-                                'name': widget.name,
-                                'createdAt': widget.date,
-                                'place': widget.place,
-                                'row': widget.rows,
-                                'column': widget.columns,
-                              });
+                              // ConcertModel.update(widget.id, {
+                              //   'name': widget.name,
+                              //   'createdAt': widget.date,
+                              //   'place': widget.place,
+                              //   'row': widget.rows,
+                              //   'column': widget.columns,
+                              // });
 
+                              // controller.getGridByConcertId(widget.id);
+                              controller.saveGridList(widget.id);
                               // Get.to(
                               //   CreationScreen(
                               //     name: nameController.text,
