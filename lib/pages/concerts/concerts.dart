@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tickets/utils/theme/app_text_theme.dart';
 
 import '../../mixins/utils.dart';
 import '../../models/concert.dart';
@@ -53,74 +54,94 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                 ),
                 body: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: 600,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 24),
+                            Text(
+                              'Мои концерты:',
+                              style: Get.textTheme.headline3Bold,
+                            ),
+                            const SizedBox(height: 16),
+                            for (ConcertModel concert in controller.allConcerts)
+                              Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Get.to(
+                                        CreationScreen(
+                                          id: concert.id,
+                                          name: concert.name,
+                                          date: concert.createdAt.toString(),
+                                          place: concert.place,
+                                          rows: int.tryParse(concert.row ?? '') ?? 10,
+                                          columns: int.tryParse(concert.column ?? '') ?? 10,
+                                        ),
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      width: 400,
+                                      child: Card(
+                                        margin: const EdgeInsets.symmetric(vertical: 6),
+                                        color: AppColors.WHITE,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                                          alignment: Alignment.center,
+                                          height: 64,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                concert.name,
+                                                style: Get.textTheme.bodyText1,
+                                              ),
+                                              SizedBox(width: 6),
+                                              Text(
+                                                concert.createdAt.toString(),
+                                                style: Get.textTheme.bodyText2,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      await ConcertModel.delete(concert.id);
+                                      await controller.getAllItems();
+                                    },
+                                    child: const Card(
+                                      elevation: 5,
+                                      child: SizedBox(
+                                        height: 64,
+                                        width: 64,
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: Colors.redAccent,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 48),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 24),
                         Text(
-                          'Мои концерты:',
-                          style: Get.textTheme.bodyText1,
-                        ),
-                        const SizedBox(height: 16),
-                        for (ConcertModel concert in controller.allConcerts)
-                          Row(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Get.to(
-                                    CreationScreen(
-                                      id: concert.id,
-                                      name: concert.name,
-                                      date: concert.createdAt.toString(),
-                                      place: concert.place,
-                                      rows: int.tryParse(concert.row ?? '') ?? 10,
-                                      columns: int.tryParse(concert.column ?? '') ?? 10,
-                                    ),
-                                  );
-                                },
-                                child: Card(
-                                  margin: const EdgeInsets.symmetric(vertical: 6),
-                                  color: AppColors.WHITE,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                                    alignment: Alignment.center,
-                                    height: 64,
-                                    child: Text(
-                                      concert.name,
-                                      style: Get.textTheme.bodyText2,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () async {
-                                  await ConcertModel.delete(concert.id);
-                                  await controller.getAllItems();
-                                },
-                                child: const Card(
-                                  elevation: 5,
-                                  child: SizedBox(
-                                    height: 64,
-                                    width: 64,
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: Colors.redAccent,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                      ],
-                    ),
-                    const SizedBox(width: 24),
-                    Column(
-                      children: [
-                        const SizedBox(height: 24),
-                        Text(
                           'Новый концерт:',
-                          style: Get.textTheme.bodyText1,
+                          style: Get.textTheme.headline3Bold,
                         ),
                         const SizedBox(height: 16),
                         Card(
@@ -301,7 +322,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 12),
+                                const SizedBox(height: 24),
                                 FloatingActionButton.extended(
                                   backgroundColor: AppColors.LIGHT_GREEN,
                                   onPressed: () async {
@@ -319,6 +340,7 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                     style: Get.textTheme.bodyText1!.copyWith(color: AppColors.WHITE),
                                   ),
                                 ),
+                                const SizedBox(height: 24),
                               ],
                             ),
                           ),
@@ -333,5 +355,13 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
     );
   }
 }
+
+// String minusOne(String value) {
+//   String result = '9';
+//   if (int.tryParse(value) != null) {
+//     result = (int.parse(value) - 1).toString();
+//   }
+//   return result;
+// }
 
 class PlaceWidgetController extends GetxController with Utils {}
