@@ -206,6 +206,8 @@ class CreationScreenController extends GetxController with Utils {
   }
 
   void removePrice(MarkerModel price) {
+    log(price.id, name: 'removePrice id');
+    MarkerModel.delete(price.id, toGrid: false);
     prices.remove(price);
     update();
   }

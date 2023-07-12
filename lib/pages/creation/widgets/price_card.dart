@@ -30,52 +30,58 @@ class _PriceCardWidgetState extends State<PriceCardWidget> {
           onTap: () {
             widget.selectPrice(widget.price);
           },
-          child: Card(
-            elevation: 5,
-            child: Row(
-              children: [
-                const SizedBox(width: 12),
-                Column(
-                  children: [
-                    Text(
-                      widget.price.name,
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-                    ),
-                    if (widget.price.price != null && widget.price.price != '')
-                      Row(
-                        children: [
-                          Text(
-                            'Цена: ',
-                            style: Get.textTheme.bodyText2,
-                          ),
-                          Text(
-                            widget.price.price ?? '?',
-                            style: Get.textTheme.bodyText2,
-                          ),
-                        ],
+          child: SizedBox(
+            width: 320,
+            child: Card(
+              elevation: 5,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.price.name,
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                       ),
-                  ],
-                ),
-                const SizedBox(width: 42),
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(4),
-                    bottomRight: Radius.circular(4),
+                      if (widget.price.price != null && widget.price.price != '')
+                        Row(
+                          children: [
+                            Text(
+                              'Цена: ',
+                              style: Get.textTheme.bodyText2,
+                            ),
+                            Text(
+                              widget.price.price ?? '?',
+                              style: Get.textTheme.bodyText2,
+                            ),
+                          ],
+                        ),
+                    ],
                   ),
-                  child: Container(
-                    height: 64,
-                    width: 64,
-                    color: widget.price.color,
-                    child: widget.price == widget.selectedPrice
-                        ? const Icon(
-                            Icons.check_rounded,
-                            color: Colors.white,
-                            size: 32,
-                          )
-                        : null,
+                  // const SizedBox(width: 42),
+                  Spacer(),
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(4),
+                      bottomRight: Radius.circular(4),
+                    ),
+                    child: Container(
+                      height: 64,
+                      width: 64,
+                      color: widget.price.color,
+                      child: widget.price == widget.selectedPrice
+                          ? const Icon(
+                              Icons.check_rounded,
+                              color: Colors.white,
+                              size: 32,
+                            )
+                          : null,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

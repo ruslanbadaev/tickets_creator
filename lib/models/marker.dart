@@ -49,7 +49,7 @@ class MarkerModel {
   static MarkerModel fromJson(Map<String, dynamic> json) {
     // debugPrint(json.toString());
     return MarkerModel(
-      id: (json['id']).toString(),
+      id: (json['id']) ?? '?',
       concertId: json['concertId'] ?? '??',
       name: json['name'] ?? '??',
       color: Color((json['color'] is int?) ? (json['color'] ?? 10) : int.tryParse(json['color']) ?? 10),
@@ -325,6 +325,7 @@ class MarkerModel {
       if (data == null) {
         throw 'MarkerModel fromFirestore';
       }
+      data['id'] = snapshot.id;
       return ResultModel(status: ResultStatus.success, data: MarkerModel.fromJson(data)
 
           // (
