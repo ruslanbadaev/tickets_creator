@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'buyer.dart';
 import 'result.dart';
 
 class ConcertModel {
@@ -9,22 +10,25 @@ class ConcertModel {
   final String name;
   final String place;
   final DateTime? createdAt;
+  final DateTime? date;
   final String? row;
   final String? column;
   final List? grid;
   final List? prices;
+  final BuyerModel? buyer;
 
   ConcertModel({
     required this.id,
     required this.name,
     required this.place,
     required this.createdAt,
+    required this.date,
     required this.row,
     required this.column,
     required this.grid,
     required this.prices,
+    required this.buyer,
   });
-
   static Future<ResultModel> save(Map<String, dynamic> json) async {
     try {
       final collection = FirebaseFirestore.instance.collection('concerts');
@@ -47,7 +51,7 @@ class ConcertModel {
       final db = FirebaseFirestore.instance;
       Query<Map<String, dynamic>>? data;
       List<ConcertModel> allResults = [];
-      data = db.collection("concerts").limit(100).orderBy('createdAt');
+      data = db.collection("concerts").limit(100).orderBy('date');
 
       var documentSnapshots = await data.get();
       for (QueryDocumentSnapshot<Map<String, dynamic>> element in documentSnapshots.docs) {
@@ -121,10 +125,12 @@ class ConcertModel {
           name: data?['name'] ?? '??',
           place: data?['place'] ?? '??',
           createdAt: DateTime.tryParse((data?['createdAt'] ?? '')),
+          date: DateTime.tryParse((data?['date'] ?? '')),
           row: data?['row'].toString(),
           column: data?['column'].toString(),
           grid: data?['grid'],
           prices: data?['prices'],
+          buyer: data?['buyer'],
         ),
       );
     } catch (e) {
@@ -178,8 +184,10 @@ class ConcertModel {
         name: $name, 
         place: $place,
         createdAt: $createdAt,
+        date: $date,
         row: $row,
         column: $column,
+        buyer: $buyer,
       }
       ''';
   }

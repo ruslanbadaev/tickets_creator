@@ -3,12 +3,11 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tickets/utils/theme/app_text_theme.dart';
 
 import '../../mixins/utils.dart';
-import '../../models/concert.dart';
 import '../../models/marker.dart';
 import '../../utils/constants/colors.dart';
+import '../../utils/theme/app_text_theme.dart';
 import '../../widgets/custom_app_bar.dart';
 import '../../widgets/custom_scaffold.dart';
 import '../../widgets/lite_loading_screen.dart';
@@ -105,50 +104,76 @@ class CreationScreenState extends State<CreationScreen> with TickerProviderState
                                 const SizedBox(height: 16),
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: SizedBox(
-                                    width: 320,
-                                    child: Card(
-                                      elevation: 5,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8),
-                                        child: Row(
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 320,
+                                        child: Card(
+                                          elevation: 5,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Row(
                                               children: [
-                                                Text(
-                                                  '  Cоздать метку:',
-                                                  style: Get.textTheme.bodyText2,
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      '  Создать метку:',
+                                                      style: Get.textTheme.bodyText2,
+                                                    ),
+                                                  ],
+                                                ),
+                                                Spacer(),
+                                                InkWell(
+                                                  onTap: () {
+                                                    Get.defaultDialog(
+                                                      title: '  Создание метки  ',
+                                                      titleStyle: Get.textTheme.bodyText1,
+                                                      content: CreationDialogWidget(
+                                                        concertId: widget.id,
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: const Card(
+                                                    color: Colors.greenAccent,
+                                                    child: SizedBox(
+                                                      height: 48,
+                                                      width: 48,
+                                                      child: Icon(
+                                                        Icons.add,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                            Spacer(),
-                                            InkWell(
-                                              onTap: () {
-                                                Get.defaultDialog(
-                                                  title: '  Создание метки  ',
-                                                  titleStyle: Get.textTheme.bodyText1,
-                                                  content: CreationDialogWidget(
-                                                    concertId: widget.id,
-                                                  ),
-                                                );
-                                              },
-                                              child: const Card(
-                                                color: Colors.greenAccent,
-                                                child: SizedBox(
-                                                  height: 48,
-                                                  width: 48,
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                      InkWell(
+                                        onTap: () {
+                                          controller.selectPrice(
+                                            MarkerModel(
+                                              id: '0',
+                                              name: 'no name',
+                                              color: Colors.grey,
+                                            ),
+                                          );
+                                        },
+                                        child: const Card(
+                                          elevation: 5,
+                                          child: SizedBox(
+                                            height: 72,
+                                            width: 72,
+                                            child: Icon(
+                                              Icons.cleaning_services_rounded,
+                                              color: Colors.redAccent,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 const SizedBox(height: 24),
@@ -393,7 +418,7 @@ class _PlaceWidgetState extends State<PlaceWidget> {
 
         //   widget.onHover(widget.marker);
         // },
-        cursor: SystemMouseCursors.grab,
+        cursor: widget.marker?.type == null ? SystemMouseCursors.forbidden : SystemMouseCursors.grab,
         child: widget.editing
             ? SizedBox(
                 height: 25,

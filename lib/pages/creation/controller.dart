@@ -36,6 +36,7 @@ class CreationScreenController extends GetxController with Utils {
       concertId,
       isGrid: false,
     );
+
     if (result != null) {
       prices.addAll(result.data as List<MarkerModel>);
       log(prices.toString(), name: 'prices');
@@ -151,7 +152,7 @@ class CreationScreenController extends GetxController with Utils {
     }
   }
 
-  void saveGridList(String concertId) {
+  void saveGridList(String concertId) async {
     log(concertId.toString(), name: 'concertId');
     try {
       List<List<Map<String, dynamic>>> gridForSave = [];
@@ -165,7 +166,10 @@ class CreationScreenController extends GetxController with Utils {
         }
         gridForSave.add(gridForSaveY);
       }
-      MarkerModel.mergeGridList(gridForSave, concertId: concertId);
+      await MarkerModel.mergeGridList(gridForSave, concertId: concertId).then((value) {
+        Get.snackbar('Готово', 'Данные сохранены');
+      });
+
       // MarkerModel.mergeGrid({
       //   'data': jsonEncode({
       //     'data': gridForSave.toString(),

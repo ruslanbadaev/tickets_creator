@@ -329,7 +329,8 @@ class ConcertsScreenState extends State<ConcertsScreen> with TickerProviderState
                                     controller.save({
                                       // 'id': const Uuid().v4(),
                                       'name': nameController.text,
-                                      'createdAt': dateController.text,
+                                      'createdAt': DateTime.now().toString(),
+                                      'date': dateController.text,
                                       'place': placeController.text,
                                       'row': xController.text,
                                       'column': yController.text,

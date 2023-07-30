@@ -68,8 +68,8 @@ class _PriceCardWidgetState extends State<PriceCardWidget> {
                       bottomRight: Radius.circular(4),
                     ),
                     child: Container(
-                      height: 64,
-                      width: 64,
+                      height: 72,
+                      width: 72,
                       color: widget.price.color,
                       child: widget.price == widget.selectedPrice
                           ? const Icon(
@@ -92,8 +92,8 @@ class _PriceCardWidgetState extends State<PriceCardWidget> {
           child: const Card(
             elevation: 5,
             child: SizedBox(
-              height: 64,
-              width: 64,
+              height: 72,
+              width: 72,
               child: Icon(
                 Icons.delete,
                 color: Colors.redAccent,
